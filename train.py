@@ -3,6 +3,7 @@ import os
 import random
 import shutil
 from model import UNet
+from unetplusplus import NestedUNet
 import matplotlib.pyplot as plt
 import numpy as np
 import skimage.io as io
@@ -18,6 +19,7 @@ from torchvision import transforms
 from tqdm import tqdm
 from dataloader import random_seed, train_loader, val_loader, batch_size
 from loss import DiceBCELoss
+
 def train(model, train_dataloader, val_dataloader, batch_size, num_epochs, learning_rate, patience, model_path, device):
     """
     Function to train a u-net model for segmentation.
@@ -44,7 +46,9 @@ def train(model, train_dataloader, val_dataloader, batch_size, num_epochs, learn
 
     # Optimiser
     optimiser = optim.SGD(model.parameters(), lr=learning_rate)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimiser, 'min' if model.n_classes > 1 else 'max',
+    # scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimiser, 'min' if model.n_classes > 1 else 'max',
+    #                                                  patience=patience)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimiser, 'min',
                                                      patience=patience)
 
     # Patience count
@@ -119,13 +123,14 @@ output_dir = "experiment_test"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-save_path = os.path.join(output_dir, "polyp_unet.pth")
+save_path = os.path.join(output_dir, "polyp_unet1.pth")
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # Initiliase Model
 torch.manual_seed(random_seed)
-model = UNet(n_channels = 3, n_classes = 1, bilinear = False).to(device)
+# model = UNet(n_channels = 3, n_classes = 1, bilinear = False).to(device)
+model = NestedUNet(num_classes = 1, input_channels = 3, bilinear = False).to(device)
 
 # Hyperparameters
 num_epochs = 10
