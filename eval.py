@@ -17,10 +17,10 @@ from torch.utils.data.sampler import RandomSampler
 from torchvision import transforms
 from tqdm import tqdm
 from test import test_loader, model
-# device = 'cuda' if torch.cuda.is_available() else 'cpu'
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def predict_mask(input, threshold):
-    output = model(input.to('cpu'))
+    output = model(input.to(device))
     output = torch.sigmoid(output).detach().cpu().numpy()
     pred = output > threshold
 
@@ -45,8 +45,8 @@ def visualize(input, pred):
         else:
             img = image_sets[i].squeeze()
         axis.imshow(img, cmap = 'gray')
+
         axis.set_title(titles[i])
-
-
+    plt.show()
 # Visualise Prediction
 visualize(input, pred)
