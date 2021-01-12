@@ -119,31 +119,46 @@ def train(model, train_dataloader, val_dataloader, batch_size, num_epochs, learn
 
     return best_model_params
 
-output_dir = "experiment_test"
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+def main():
+    output_dir = "experiment_test"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
+    save_path = os.path.join(output_dir, "polyp_unet.pth")
+
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+<<<<<<< HEAD
 save_path = os.path.join(output_dir, "polyp_unet1.pth")
+=======
+    # Initiliase Model
+    torch.manual_seed(random_seed)
+    model = UNet(n_channels = 3, n_classes = 1, bilinear = False).to(device)
+>>>>>>> 403a3e15b3fbc0c2e5cc8170999ffd0afd328699
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # Hyperparameters
+    num_epochs = 10
+    learning_rate = 0.0001
+    patience = 10
 
+<<<<<<< HEAD
 # Initiliase Model
 torch.manual_seed(random_seed)
 # model = UNet(n_channels = 3, n_classes = 1, bilinear = False).to(device)
 model = NestedUNet(num_classes = 1, input_channels = 3, bilinear = False).to(device)
+=======
+    # Train model
+    best_model_params = train(model, train_loader, val_loader, batch_size, num_epochs,
+                              learning_rate, patience, save_path, device)
+>>>>>>> 403a3e15b3fbc0c2e5cc8170999ffd0afd328699
 
-# Hyperparameters
-num_epochs = 10
-learning_rate = 0.0001
-patience = 10
+    print("Training complete.")
 
-# Train model
-best_model_params = train(model, train_loader, val_loader, batch_size, num_epochs,
-                          learning_rate, patience, save_path, device)
+    # Delete model to free memory
+    del model, best_model_params
+    gc.collect()
+    torch.cuda.empty_cache()
 
-print("Training complete.")
 
-# Delete model to free memory
-del model, best_model_params
-gc.collect()
-torch.cuda.empty_cache()
+if __name__ == "__main__":
+    main()
