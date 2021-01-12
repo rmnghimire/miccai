@@ -18,6 +18,7 @@ from torchvision import transforms
 from tqdm import tqdm
 from dataloader import random_seed, train_loader, val_loader, batch_size
 from loss import DiceBCELoss
+
 def train(model, train_dataloader, val_dataloader, batch_size, num_epochs, learning_rate, patience, model_path, device):
     """
     Function to train a u-net model for segmentation.
@@ -115,30 +116,35 @@ def train(model, train_dataloader, val_dataloader, batch_size, num_epochs, learn
 
     return best_model_params
 
-output_dir = "experiment_test"
-if not os.path.exists(output_dir):
-    os.makedirs(output_dir)
+def main():
+    output_dir = "experiment_test"
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
 
-save_path = os.path.join(output_dir, "polyp_unet.pth")
+    save_path = os.path.join(output_dir, "polyp_unet.pth")
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-# Initiliase Model
-torch.manual_seed(random_seed)
-model = UNet(n_channels = 3, n_classes = 1, bilinear = False).to(device)
+    # Initiliase Model
+    torch.manual_seed(random_seed)
+    model = UNet(n_channels = 3, n_classes = 1, bilinear = False).to(device)
 
-# Hyperparameters
-num_epochs = 10
-learning_rate = 0.0001
-patience = 10
+    # Hyperparameters
+    num_epochs = 10
+    learning_rate = 0.0001
+    patience = 10
 
-# Train model
-best_model_params = train(model, train_loader, val_loader, batch_size, num_epochs,
-                          learning_rate, patience, save_path, device)
+    # Train model
+    best_model_params = train(model, train_loader, val_loader, batch_size, num_epochs,
+                              learning_rate, patience, save_path, device)
 
-print("Training complete.")
+    print("Training complete.")
 
-# Delete model to free memory
-del model, best_model_params
-gc.collect()
-torch.cuda.empty_cache()
+    # Delete model to free memory
+    del model, best_model_params
+    gc.collect()
+    torch.cuda.empty_cache()
+
+
+if __name__ == "__main__":
+    main()
