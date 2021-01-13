@@ -16,7 +16,7 @@ from torch.utils.data import DataLoader, Dataset
 from torch.utils.data.sampler import RandomSampler
 from torchvision import transforms
 from tqdm import tqdm
-from dataloader import random_seed, train_loader, val_loader, batch_size
+from dataloader import random_seed, train_loader, val_loader, batch_size,unlabeled_set
 from loss import DiceBCELoss
 
 def train(model, train_dataloader, val_dataloader, batch_size, num_epochs, learning_rate, patience, model_path, device):
