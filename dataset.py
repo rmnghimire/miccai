@@ -1,21 +1,6 @@
-import gc
 import os
 import random
-import shutil
 
-import matplotlib.pyplot as plt
-import numpy as np
-import skimage.io as io
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torchvision
-from PIL import Image
-from torch import optim
-from torch.utils.data import DataLoader, Dataset
-from torch.utils.data.sampler import RandomSampler
-from torchvision import transforms
-from tqdm import tqdm
 
 def create_text_file(data_dict, data_type, img_txt_path, mask_txt_path=None):
     """
@@ -29,8 +14,8 @@ def create_text_file(data_dict, data_type, img_txt_path, mask_txt_path=None):
     Example:
     create_text_file(train_dict, "train", "train_images.txt", "train_masks.txt")
     """
-    with open(img_txt_path, 'w') as f:
-        with open(mask_txt_path, 'w') as i:
+    with open(img_txt_path, "w") as f:
+        with open(mask_txt_path, "w") as i:
             for key, value in data_dict.items():
                 f.write(value[0])
                 i.write(value[1])
@@ -38,11 +23,15 @@ def create_text_file(data_dict, data_type, img_txt_path, mask_txt_path=None):
                 f.write("\n")
                 i.write("\n")
 
-    print("\n\n{0} files created.\nImages: {1}\nMasks: {2}".format(data_type.capitalize(), img_txt_path, mask_txt_path))
+    print(
+        "\n\n{0} files created.\nImages: {1}\nMasks: {2}".format(
+            data_type.capitalize(), img_txt_path, mask_txt_path
+        )
+    )
     return
 
 
-def split_data(data_dir, seed, split_ratio=[.80, .10, .10]):
+def split_data(data_dir, seed, split_ratio=[0.80, 0.10, 0.10]):
     img_dir = os.path.join("data", "images")
     mask_dir = os.path.join("data", "masks")
 
@@ -63,14 +52,15 @@ def split_data(data_dir, seed, split_ratio=[.80, .10, .10]):
     test_size = len(data_list) - train_size - val_size
 
     train_dict = dict(data_list[:train_size])
-    val_dict = dict(data_list[train_size:train_size + val_size])
-    test_dict = dict(data_list[train_size + val_size:])
+    val_dict = dict(data_list[train_size : train_size + val_size])
+    test_dict = dict(data_list[train_size + val_size :])
 
     return train_dict, val_dict, test_dict
 
+
 data_dir = "data"
 random_seed = 7
-split_ratio = [.80, .10, .10]
+split_ratio = [0.80, 0.10, 0.10]
 
 train_dict, val_dict, test_dict = split_data(data_dir, random_seed, split_ratio)
 

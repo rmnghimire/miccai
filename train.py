@@ -1,21 +1,9 @@
 import gc
 import os
-import random
-import shutil
 from model import UNet
 from unetplusplus import NestedUNet
-import matplotlib.pyplot as plt
-import numpy as np
-import skimage.io as io
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torchvision
-from PIL import Image
 from torch import optim
-from torch.utils.data import DataLoader, Dataset
-from torch.utils.data.sampler import RandomSampler
-from torchvision import transforms
 from tqdm import tqdm
 from dataloader import random_seed, train_loader, val_loader, batch_size
 from loss import DiceBCELoss
@@ -128,29 +116,23 @@ def main():
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-<<<<<<< HEAD
 save_path = os.path.join(output_dir, "polyp_unet1.pth")
-=======
     # Initiliase Model
     torch.manual_seed(random_seed)
     model = UNet(n_channels = 3, n_classes = 1, bilinear = False).to(device)
->>>>>>> 403a3e15b3fbc0c2e5cc8170999ffd0afd328699
 
     # Hyperparameters
     num_epochs = 10
     learning_rate = 0.0001
     patience = 10
 
-<<<<<<< HEAD
 # Initiliase Model
 torch.manual_seed(random_seed)
 # model = UNet(n_channels = 3, n_classes = 1, bilinear = False).to(device)
 model = NestedUNet(num_classes = 1, input_channels = 3, bilinear = False).to(device)
-=======
     # Train model
     best_model_params = train(model, train_loader, val_loader, batch_size, num_epochs,
                               learning_rate, patience, save_path, device)
->>>>>>> 403a3e15b3fbc0c2e5cc8170999ffd0afd328699
 
     print("Training complete.")
 

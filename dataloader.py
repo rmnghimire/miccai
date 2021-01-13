@@ -1,19 +1,7 @@
-import gc
-import os
-import random
-import shutil
-
-import matplotlib.pyplot as plt
-import numpy as np
 import skimage.io as io
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torchvision
 from PIL import Image
-from torch import optim
 from torch.utils.data import DataLoader, Dataset
-import dataset
 from torchvision import transforms
 
 
@@ -44,19 +32,25 @@ class PolypDataset(Dataset):
         return (img, label, idx)
 
     def preprocess(self):
-        return transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.Resize(self.input_size, Image.BICUBIC),
-            transforms.ToTensor(),
-        ])
+        return transforms.Compose(
+            [
+                transforms.ToPILImage(),
+                transforms.Resize(self.input_size, Image.BICUBIC),
+                transforms.ToTensor(),
+            ]
+        )
 
     def preprocess_label(self):
-        return transforms.Compose([
-            transforms.ToPILImage(),
-            transforms.Resize(self.input_size, Image.BICUBIC),
-            transforms.Grayscale(num_output_channels=1),
-            transforms.ToTensor()
-        ])
+        return transforms.Compose(
+            [
+                transforms.ToPILImage(),
+                transforms.Resize(self.input_size, Image.BICUBIC),
+                transforms.Grayscale(num_output_channels=1),
+                transforms.ToTensor(),
+            ]
+        )
+
+
 input_size = (128, 128)
 
 # Create train and validation sets

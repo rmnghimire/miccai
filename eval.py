@@ -1,22 +1,7 @@
-import gc
-import os
-import random
-import shutil
-
 import matplotlib.pyplot as plt
-import numpy as np
-import skimage.io as io
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torchvision
-from PIL import Image
-from torch import optim
-from torch.utils.data import DataLoader, Dataset
-from torch.utils.data.sampler import RandomSampler
-from torchvision import transforms
-from tqdm import tqdm
 from test import test_loader, model
+
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def predict_mask(input, threshold):
