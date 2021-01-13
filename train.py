@@ -58,6 +58,7 @@ def train(model, train_dataloader, val_dataloader, batch_size, num_epochs, learn
         # Train model
         model.train()
         for features, labels, idx in train_dataloader:
+            print(len(train_dataloader))
             optimiser.zero_grad()
             features, labels = features.to(device), labels.to(device)
             output = model.forward(features)

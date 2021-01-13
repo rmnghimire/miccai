@@ -43,8 +43,8 @@ def create_text_file(data_dict, data_type, img_txt_path, mask_txt_path=None):
 
 
 def split_data(data_dir, seed, split_ratio=[.80, .10, .10]):
-    img_dir = os.path.join("data", "images")
-    mask_dir = os.path.join("data", "masks")
+    img_dir = os.path.join(data_dir, "data/images")
+    mask_dir = os.path.join(data_dir, "data/masks")
 
     data_dict = {}
     for image in os.listdir(img_dir):
@@ -68,18 +68,18 @@ def split_data(data_dir, seed, split_ratio=[.80, .10, .10]):
 
     return train_dict, val_dict, test_dict
 
-data_dir = "data"
+data_dir = "/home/prml/Documents/Ksavir_challenge/"
 random_seed = 7
 split_ratio = [.80, .10, .10]
 
 train_dict, val_dict, test_dict = split_data(data_dir, random_seed, split_ratio)
 
-train_img_txt = "data/train_images.txt"
-train_mask_txt = "data/train_masks.txt"
-val_img_txt = "data/val_images.txt"
-val_mask_txt = "data/val_masks.txt"
-test_img_txt = "data/test_images.txt"
-test_mask_txt = "data/test_masks.txt"
+train_img_txt = "./data/train_images.txt"
+train_mask_txt = "./data/train_masks.txt"
+val_img_txt = "./data/val_images.txt"
+val_mask_txt = "./data/val_masks.txt"
+test_img_txt = "./data/test_images.txt"
+test_mask_txt = "./data/test_masks.txt"
 
 create_text_file(train_dict, "train", train_img_txt, train_mask_txt)
 create_text_file(val_dict, "val", val_img_txt, val_mask_txt)
