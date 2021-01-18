@@ -97,7 +97,7 @@ class PolypDataset(Dataset):
             transforms.Grayscale(num_output_channels=1),
             transforms.ToTensor()
         ])
-input_size = (128, 128)
+input_size = (224, 224)
 
 # Create train and validation sets
 train_images_file = "data/train_images.txt"
@@ -105,10 +105,13 @@ train_labels_file = "data/train_masks.txt"
 val_images_file = "data/val_images.txt"
 val_labels_file = "data/val_masks.txt"
 test_labels_file = "data/test_images.txt"
+Unlabeled_labels_file = "data/Unlabeled.txt"
+
 # Initialise Datasets
 train_set = PolypDataset(train_images_file, train_labels_file, input_size)
 val_set = PolypDataset(val_images_file, val_labels_file, input_size)
-unlabeled_set = Unlabeled_PolypDataset(test_labels_file,input_size)
+unlabeled_set = Unlabeled_PolypDataset(Unlabeled_labels_file,input_size)
+
 # Batch size for training
 batch_size = 8
 
